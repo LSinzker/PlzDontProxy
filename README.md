@@ -17,7 +17,7 @@ PlzDontProxy$ ./bin/aracne -p _valid_port_number_
 Em outro terminal, chamar telnet.
 
 <shell>
-foo@bar:~$ telnet localhost <valid_port_number>
+foo@bar:~$ telnet localhost _valid_port_number_
 
 foo@bar:~$ _your message_
 </shell>
