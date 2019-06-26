@@ -8,16 +8,14 @@
 
 ### Instruções
 
-<shell>
+```bash
 PlzDontProxy$ make
 
-PlzDontProxy$ ./bin/aracne -p _valid_port_number_
-</shell>
+PlzDontProxy$ ./bin/aracne -p valid_port_number
+```
 
 Em outro terminal, chamar telnet.
 
-<shell>
-foo@bar:~$ telnet localhost _valid_port_number_
-
-foo@bar:~$ _your message_
-</shell>
+```bash
+foo@bar:~$ telnet localhost valid_port_number
+```
