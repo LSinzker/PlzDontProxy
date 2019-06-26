@@ -71,7 +71,7 @@ void Server::Start(int port) {
     // Display message
     std::cout << "Received: " << std::string(buffer, 0, in_msg) << std::endl;
     // Send message
-    send(clientSocket, buffer, in_msg + 1, 0);
+    send(clientSocket, buffer, in_msg + 1, 0);  //echo message back to user
   }
   // Close socket
   close(clientSocket);
