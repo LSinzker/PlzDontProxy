@@ -1,3 +1,4 @@
+#pragma once
 #include <cstdint>
 #include <iostream>
 #include <sys/socket.h>
@@ -26,4 +27,7 @@ private:
 public:
     Server() = default;
     void Start(int port);
+    void AcceptCall();
+    int ReceiveRequest(char *buffer, int max);
+    void AnswerRequest();
 };

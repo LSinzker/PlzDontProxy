@@ -7,10 +7,16 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include "Server.hpp"
+#include "HTTPrequest.hpp"
+
+#define buff_size 1024*1024
+
+//firefox http://localhost:8080
 
 int main(int argc, char *argv[]) {
 
   int port_number = 8228;
+  char buffer[buff_size];
 
   std::cout << "Welcome to PlzDontProxy." << std::endl;
 
@@ -27,5 +33,15 @@ int main(int argc, char *argv[]) {
   //TODO call server here
   Server server;
   server.Start((int)port_number);
+  server.AcceptCall();
+  int aux = server.ReceiveRequest(buffer, sizeof(buffer));
+  buffer[aux] = '\0';
+  std::cout << "Request: " << std::endl << buffer << std::endl;
+  HTTPrequest request(buffer);
+  std::cin.get();
+
+  server.AnswerRequest();
+
+
   return 0;
 }

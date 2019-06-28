@@ -2,6 +2,7 @@
 #include <string>
 #include <cstring>
 #include "Server.hpp"
+#include "HTTPrequest.hpp"
 
 void Server::Start(int port) {
 
@@ -20,7 +21,6 @@ void Server::Start(int port) {
   inet_pton(AF_INET, "0.0.0.0", &server_hint.sin_addr);  //"0.0.0.0 -> any address in this machine"
                                                   //pton will convert IPv4 addr to binary
         // Actual binding process
-          //socket    format
   if ( bind(listening, (sockaddr*)&server_hint, sizeof(server_hint)) == -1 ) {
       std::cerr << "Cannot bind to IP/port." << std::endl;
       exit(-2);
@@ -33,7 +33,9 @@ void Server::Start(int port) {
       exit(-3);
   }
   std::cout << "Listening to port " << port << std::endl;
+}
 
+void Server::AcceptCall() {
   // Accept a call
   clientSocket = accept (listening, (sockaddr*)&client, &clientSize);
   if (clientSocket == -1) {
@@ -53,26 +55,34 @@ void Server::Start(int port) {
     inet_ntop(AF_INET, &client.sin_addr, host, NI_MAXHOST);     //does the opposit of inet_pton
     std::cout << host << " connect on " << ntohs(client.sin_port) << std::endl;
   }
+}
 
   // While receiving display message, echo message
-  while (true) {
+int Server::ReceiveRequest(char *buffer, int max){
+
     // Clear buffer
-    memset(buffer, 0, 4096);
+  memset(buffer, 0, 4096);
     // Wait for message
-    in_msg = recv(clientSocket, buffer, 4096, 0);
-    if (in_msg == -1) {
-      std::cerr << "A connection issue has occurred." << std::endl;
-      break;
-    }
-    if (in_msg == 0) {
-      std::cout << "Client disconnected." << std::endl;
-      break;
-    }
-    // Display message
-    std::cout << "Received: " << std::string(buffer, 0, in_msg) << std::endl;
-    // Send message
-    send(clientSocket, buffer, in_msg + 1, 0);  //echo message back to user
+  in_msg = recv(clientSocket, buffer, 4096, 0);
+  if (in_msg == -1) {
+    std::cerr << "A connection issue has occurred." << std::endl;
+      //break;
   }
+  if (in_msg == 0) {
+    std::cout << "Client disconnected." << std::endl;
+      //break;
+  }
+    // Display message
+  std::cout << "Received: " << std::string(buffer, 0, in_msg) << std::endl;
+  // Send message
+  send(clientSocket, buffer, in_msg + 1, 0);  //echo message back to user
+
+  return in_msg;
+}
+void Server::AnswerRequest() {
+
+  std::cout << "Reached." << std::endl;       //TODO: remove this test
+
   // Close socket
   close(clientSocket);
 }
