@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
   app.Start((int)port_number);
   app.AcceptCall();
   int request_size = app.ReceiveRequest(buffer, sizeof(buffer));
-  buffer[request_size] = '\0';
+  // GETS HERE buffer is weird
   HTTPrequest request(buffer);
   std::cout << "Request: " << std::endl << buffer << std::endl;
 
