@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include "Server.hpp"
+#include "AppSocket.hpp"
 #include "HTTPrequest.hpp"
 
-void Server::Start(int port) {
+void AppSocket::Start(int port) {
 
   // Create a socket
   listening = socket(AF_INET, SOCK_STREAM, 0); // AF_INET is for IPv4
@@ -35,7 +35,7 @@ void Server::Start(int port) {
   std::cout << "Listening to port " << port << std::endl;
 }
 
-void Server::AcceptCall() {
+void AppSocket::AcceptCall() {
   // Accept a call
   clientSocket = accept (listening, (sockaddr*)&client, &clientSize);
   if (clientSocket == -1) {
@@ -58,12 +58,12 @@ void Server::AcceptCall() {
 }
 
   // While receiving display message, echo message
-int Server::ReceiveRequest(char *buffer, int max){
+int AppSocket::ReceiveRequest(char *buffer, int max){
 
     // Clear buffer
-  memset(buffer, 0, 4096);
+  memset(buffer, 0, max);
     // Wait for message
-  in_msg = recv(clientSocket, buffer, 4096, 0);
+  in_msg = read(clientSocket, buffer, max);
   if (in_msg == -1) {
     std::cerr << "A connection issue has occurred." << std::endl;
       //break;
@@ -73,16 +73,22 @@ int Server::ReceiveRequest(char *buffer, int max){
       //break;
   }
     // Display message
+  std::cout << "Size: " << in_msg << std::endl;
   std::cout << "Received: " << std::string(buffer, 0, in_msg) << std::endl;
   // Send message
   send(clientSocket, buffer, in_msg + 1, 0);  //echo message back to user
 
   return in_msg;
 }
-void Server::AnswerRequest() {
+void AppSocket::AnswerRequest(char *buffer, int size) {
 
   std::cout << "Reached." << std::endl;       //TODO: remove this test
+  if (write(clientSocket, buffer, size) < 0) {
+    std::cerr << "Unable to answer request." << std::endl;
+  }
+}
 
-  // Close socket
+// Close socket
+AppSocket::~AppSocket() {
   close(clientSocket);
 }

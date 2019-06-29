@@ -6,17 +6,16 @@
 #include <stdlib.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include "Server.hpp"
-#include "HTTPrequest.hpp"
-
-#define buff_size 1024*1024
-
+#include <vector>
+#include "AppSocket.hpp"
+#include "NetSocket.hpp"
+//#include "HTTPrequest.hpp"
 //firefox http://localhost:8080
 
 int main(int argc, char *argv[]) {
 
   int port_number = 8228;
-  char buffer[buff_size];
+  char buffer[4096];
 
   std::cout << "Welcome to PlzDontProxy." << std::endl;
 
@@ -31,17 +30,21 @@ int main(int argc, char *argv[]) {
   }
 
   //TODO call server here
-  Server server;
-  server.Start((int)port_number);
-  server.AcceptCall();
-  int aux = server.ReceiveRequest(buffer, sizeof(buffer));
-  buffer[aux] = '\0';
-  std::cout << "Request: " << std::endl << buffer << std::endl;
+  AppSocket app;
+  app.Start((int)port_number);
+  app.AcceptCall();
+  int request_size = app.ReceiveRequest(buffer, sizeof(buffer));
+  buffer[request_size] = '\0';
   HTTPrequest request(buffer);
+  std::cout << "Request: " << std::endl << buffer << std::endl;
+
+  NetSocket net;
   std::cin.get();
-
-  server.AnswerRequest();
-
+  int answer_size = net.SendRequest(request, buffer, sizeof(buffer));
+  buffer[answer_size] = '\0';
+  std::cout << "Answer: " << std::endl << buffer << std::endl;
+  app.AnswerRequest(buffer, answer_size);
+  std::cin.get();
 
   return 0;
 }

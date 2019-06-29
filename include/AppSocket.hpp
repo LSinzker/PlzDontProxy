@@ -7,8 +7,9 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <netdb.h>
+#include <vector>
 
-class Server {
+class AppSocket {
 
 private:
     sockaddr_in server_hint;
@@ -25,9 +26,10 @@ private:
 
 
 public:
-    Server() = default;
+    AppSocket() = default;
+    ~AppSocket();
     void Start(int port);
     void AcceptCall();
     int ReceiveRequest(char *buffer, int max);
-    void AnswerRequest();
+    void AnswerRequest(char *buffer, int size);
 };
