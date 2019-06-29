@@ -35,7 +35,6 @@ int main(int argc, char *argv[]) {
   server.Start((int)port_number);
   server.AcceptCall();
   int aux = server.ReceiveRequest(buffer, sizeof(buffer));
-  buffer[aux] = '\0';
   std::cout << "Request: " << std::endl << buffer << std::endl;
   HTTPrequest request(buffer);
   std::cin.get();
