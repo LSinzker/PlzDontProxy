@@ -63,6 +63,7 @@ int AppSocket::ReceiveRequest(char *buffer, int max){
     // Clear buffer
   memset(buffer, 0, max);
     // Wait for message
+  std::cout << "Receiving request." << std::endl;
   in_msg = read(clientSocket, buffer, max);
   if (in_msg == -1) {
     std::cerr << "A connection issue has occurred." << std::endl;
@@ -73,10 +74,6 @@ int AppSocket::ReceiveRequest(char *buffer, int max){
       //break;
   }
     // Display message
-  std::cout << "Size: " << in_msg << std::endl;
-  std::cout << "Received: " << std::string(buffer, 0, in_msg) << std::endl;
-  // Send message
-  send(clientSocket, buffer, in_msg + 1, 0);  //echo message back to user
 
   return in_msg;
 }
