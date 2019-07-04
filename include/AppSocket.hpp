@@ -22,7 +22,7 @@ private:
     int clientSocket;       //socket
     int result;
     char buffer[4096];
-    int in_msg;
+    int size_msg;
 
 
 public:

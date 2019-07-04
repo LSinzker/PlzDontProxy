@@ -64,23 +64,21 @@ int AppSocket::ReceiveRequest(char *buffer, int max){
   memset(buffer, 0, max);
     // Wait for message
   std::cout << "Receiving request." << std::endl;
-  in_msg = read(clientSocket, buffer, max);
-  if (in_msg == -1) {
-    std::cerr << "A connection issue has occurred." << std::endl;
-      //break;
-  }
-  if (in_msg == 0) {
-    std::cout << "Client disconnected." << std::endl;
-      //break;
-  }
-    // Display message
+  size_msg = recv(clientSocket, buffer, max, 0);
 
-  return in_msg;
+  if (size_msg == -1)
+    std::cerr << "A connection issue has occurred." << std::endl;
+  if (size_msg == 0)
+    std::cout << "Client disconnected." << std::endl;
+  if (size_msg >= max)
+    std::cout << "Buffer overflow when receiving request." << std::endl;
+
+  return size_msg;
 }
 void AppSocket::AnswerRequest(char *buffer, int size) {
 
   std::cout << "Reached." << std::endl;       //TODO: remove this test
-  if (write(clientSocket, buffer, size) < 0) {
+  if (send(clientSocket, buffer, size, 0) < 0) {
     std::cerr << "Unable to answer request." << std::endl;
   }
 }

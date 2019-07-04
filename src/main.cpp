@@ -39,12 +39,12 @@ int main(int argc, char *argv[]) {
   std::cout << "Request: " << std::endl << buffer << std::endl;
 
   NetSocket net;
-  std::cin.get();
+  //std::cin.get();
   int answer_size = net.SendRequest(request, buffer, sizeof(buffer));
   buffer[answer_size] = '\0';
   std::cout << "Answer: " << std::endl << buffer << std::endl;
   app.AnswerRequest(buffer, answer_size);
-  std::cin.get();
+  app.~AppSocket();
 
   return 0;
 }
