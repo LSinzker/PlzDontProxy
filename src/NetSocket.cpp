@@ -51,6 +51,7 @@ int NetSocket::SendRequest(HTTPrequest &request, char *answer, int max) {
     std::cerr << "Buffer overflow when receiving answer." << std::endl;
     exit(-1);
   }
+  close(socket_fd);
   return total;
 }
 

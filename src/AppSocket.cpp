@@ -78,10 +78,10 @@ int AppSocket::ReceiveRequest(char *buffer, int max){
 }
 void AppSocket::AnswerRequest(char *buffer, int size) {
 
-  std::cout << "Reached." << std::endl;       //TODO: remove this test
   if (write(clientSocket, buffer, size) < 0) {
     std::cerr << "Unable to answer request." << std::endl;
   }
+  std::cout << "Reached." << std::endl;       //TODO: remove this test
 }
 
 // Close socket

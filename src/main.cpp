@@ -9,8 +9,6 @@
 #include <vector>
 #include "AppSocket.hpp"
 #include "NetSocket.hpp"
-//#include "HTTPrequest.hpp"
-//firefox http://localhost:8080
 
 int main(int argc, char *argv[]) {
 
@@ -32,12 +30,14 @@ int main(int argc, char *argv[]) {
   //TODO call server here
   AppSocket app;
   app.Start((int)port_number);
+
   while(true){
+
     app.AcceptCall();
     int request_size = app.ReceiveRequest(buffer, sizeof(buffer));
 
     if (request_size < 5) {
-      std::cout << "Invalid.." << std::endl;
+      std::cerr << "Invalid.." << std::endl;
       continue;
     }
     buffer[request_size] = '\0';
@@ -52,8 +52,16 @@ int main(int argc, char *argv[]) {
     std::cout << "Answer: " << std::endl << buffer << std::endl;
 
     app.AnswerRequest(buffer, answer_size);
+
   }
+  /*QApplication a(argc, argv);
+  MainWindow w;
+  w.show();
+  return a.exec();*/
+
+  std::cout << "Closing socket... ";
   app.~AppSocket();
+  std::cout << "Exiting." << std::endl;
 
   return 0;
 }
