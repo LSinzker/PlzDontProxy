@@ -31,7 +31,7 @@ int NetSocket::SendRequest(HTTPrequest &request, char *answer, int max) {
   UpdateRequest(request);
   std::string request_msg = request.Converter();
 
-  if (send(socket_fd, request_msg.c_str(), request_msg.length(), 0) == -0) {
+  if (write(socket_fd, request_msg.c_str(), request_msg.length()) < 0) {
     std::cerr << "Unable to write to socket." << std::endl;
     exit(-4);
   }
@@ -39,7 +39,7 @@ int NetSocket::SendRequest(HTTPrequest &request, char *answer, int max) {
   int n = 0, total = 0;
         //fazer assim para arquivos grandes
                   //socket  | memory buf    | num bytes
-  while ((n = recv(socket_fd, answer + total, max - total, 0)) > 0) {
+  while ((n = read(socket_fd, answer + total, max - total)) > 0) {
     total += n;     //n = number of bytes received
   }
 
@@ -47,8 +47,10 @@ int NetSocket::SendRequest(HTTPrequest &request, char *answer, int max) {
     std::cerr << "Unable to read answer." << std::endl;
     exit(-5);
   }
-  if (n >= max)
+  if (n >= max){
     std::cerr << "Buffer overflow when receiving answer." << std::endl;
+    exit(-1);
+  }
   return total;
 }
 

@@ -43,7 +43,7 @@ void AppSocket::AcceptCall() {
     exit(-4);
   }
   // Close the listening socket
-  close(listening);
+  //close(listening);
   memset(host, 0, NI_MAXHOST);
   memset(svc, 0, NI_MAXSERV);
 
@@ -61,24 +61,25 @@ void AppSocket::AcceptCall() {
 int AppSocket::ReceiveRequest(char *buffer, int max){
 
     // Clear buffer
-  memset(buffer, 0, max);
+  //memset(buffer, 0, max);
     // Wait for message
   std::cout << "Receiving request." << std::endl;
-  size_msg = recv(clientSocket, buffer, max, 0);
+  size_msg = read(clientSocket, buffer, max);
 
   if (size_msg == -1)
     std::cerr << "A connection issue has occurred." << std::endl;
   if (size_msg == 0)
     std::cout << "Client disconnected." << std::endl;
-  if (size_msg >= max)
+  if (size_msg >= max) {
     std::cout << "Buffer overflow when receiving request." << std::endl;
-
+    exit(-1);
+  }
   return size_msg;
 }
 void AppSocket::AnswerRequest(char *buffer, int size) {
 
   std::cout << "Reached." << std::endl;       //TODO: remove this test
-  if (send(clientSocket, buffer, size, 0) < 0) {
+  if (write(clientSocket, buffer, size) < 0) {
     std::cerr << "Unable to answer request." << std::endl;
   }
 }

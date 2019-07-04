@@ -29,5 +29,4 @@ std::string HTTPrequest::Converter() {
 
   return head.str();
 
-
 }

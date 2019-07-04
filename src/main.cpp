@@ -15,7 +15,7 @@
 int main(int argc, char *argv[]) {
 
   int port_number = 8228;
-  char buffer[4096];
+  char buffer[1024*1024];
 
   std::cout << "Welcome to PlzDontProxy." << std::endl;
 
@@ -32,18 +32,27 @@ int main(int argc, char *argv[]) {
   //TODO call server here
   AppSocket app;
   app.Start((int)port_number);
-  app.AcceptCall();
-  int request_size = app.ReceiveRequest(buffer, sizeof(buffer));
-  // GETS HERE buffer is weird
-  HTTPrequest request(buffer);
-  std::cout << "Request: " << std::endl << buffer << std::endl;
+  while(true){
+    app.AcceptCall();
+    int request_size = app.ReceiveRequest(buffer, sizeof(buffer));
 
-  NetSocket net;
-  //std::cin.get();
-  int answer_size = net.SendRequest(request, buffer, sizeof(buffer));
-  buffer[answer_size] = '\0';
-  std::cout << "Answer: " << std::endl << buffer << std::endl;
-  app.AnswerRequest(buffer, answer_size);
+    if (request_size < 5) {
+      std::cout << "Invalid.." << std::endl;
+      continue;
+    }
+    buffer[request_size] = '\0';
+
+    HTTPrequest request(buffer);
+    std::cout << "Request: " << std::endl << buffer << std::endl;
+
+    NetSocket net;
+    int answer_size = net.SendRequest(request, buffer, sizeof(buffer));
+
+    buffer[answer_size] = '\0';
+    std::cout << "Answer: " << std::endl << buffer << std::endl;
+
+    app.AnswerRequest(buffer, answer_size);
+  }
   app.~AppSocket();
 
   return 0;
