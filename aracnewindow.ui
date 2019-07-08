@@ -14,10 +14,10 @@
    <string>AracneWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="SpiderButton">
     <property name="geometry">
      <rect>
-      <x>1140</x>
+      <x>1070</x>
       <y>0</y>
       <width>105</width>
       <height>39</height>
@@ -27,10 +27,10 @@
      <string>Spider</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="DumpButton">
     <property name="geometry">
      <rect>
-      <x>1280</x>
+      <x>1180</x>
       <y>0</y>
       <width>105</width>
       <height>39</height>
@@ -40,27 +40,27 @@
      <string>Dump</string>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="plainTextEdit">
+   <widget class="QPlainTextEdit" name="requestText">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>40</y>
       <width>691</width>
-      <height>881</height>
+      <height>831</height>
      </rect>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="plainTextEdit_2">
+   <widget class="QPlainTextEdit" name="replyText">
     <property name="geometry">
      <rect>
       <x>710</x>
       <y>40</y>
       <width>691</width>
-      <height>881</height>
+      <height>831</height>
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="requestButton">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -73,7 +73,7 @@
      <string>Request</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_4">
+   <widget class="QPushButton" name="replyButton">
     <property name="geometry">
      <rect>
       <x>710</x>
@@ -86,6 +86,19 @@
      <string>Reply</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>1290</x>
+      <y>0</y>
+      <width>105</width>
+      <height>39</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Stop</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -96,6 +109,13 @@
      <height>35</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuNew">
+    <property name="title">
+     <string>New</string>
+    </property>
+    <addaction name="setPort"/>
+   </widget>
+   <addaction name="menuNew"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -106,6 +126,16 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="setPort">
+   <property name="text">
+    <string>Listen to port...</string>
+   </property>
+  </action>
+  <action name="actionEnd_connection">
+   <property name="text">
+    <string>End connection</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

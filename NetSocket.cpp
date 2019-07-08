@@ -9,22 +9,22 @@ int NetSocket::SendRequest(HTTPrequest &request, char *answer, int max) {
 
   socket_fd = socket(AF_INET, SOCK_STREAM, 0);
   if (socket_fd < 0) {
-    std::cerr << "Could not create client socket." << std::endl;
+    //std::cerr << "Could not create client socket." << std::endl;
   }
 
   std::string& hostname = request.header.at("Host:");
   hostent* host = gethostbyname(hostname.c_str());
   if (host == NULL || host->h_addr_list == NULL) {
-    std::cerr << "Unable to retrieve host address by name." << std::endl;
+    //std::cerr << "Unable to retrieve host address by name." << std::endl;
     exit(-2);
   }
 
-  sockaddr_in addr = {0};
+  sockaddr_in addr;
   addr.sin_family = AF_INET;
   addr.sin_port = htons(80);  //port 80 = HTTP
   memcpy(&addr.sin_addr.s_addr, host->h_addr_list[0], host->h_length);
   if (connect(socket_fd, (sockaddr *) &addr, sizeof(addr)) < 0) {
-    std::cerr << "Unable not connect to server." << std::endl;
+    //std::cerr << "Unable not connect to server." << std::endl;
     exit(-3);
   }
   // send request
@@ -32,7 +32,7 @@ int NetSocket::SendRequest(HTTPrequest &request, char *answer, int max) {
   std::string request_msg = request.Converter();
 
   if (write(socket_fd, request_msg.c_str(), request_msg.length()) < 0) {
-    std::cerr << "Unable to write to socket." << std::endl;
+    //std::cerr << "Unable to write to socket." << std::endl;
     exit(-4);
   }
 
@@ -44,11 +44,11 @@ int NetSocket::SendRequest(HTTPrequest &request, char *answer, int max) {
   }
 
   if (n == -1) {
-    std::cerr << "Unable to read answer." << std::endl;
+    //std::cerr << "Unable to read answer." << std::endl;
     exit(-5);
   }
   if (n >= max){
-    std::cerr << "Buffer overflow when receiving answer." << std::endl;
+    //std::cerr << "Buffer overflow when receiving answer." << std::endl;
     exit(-1);
   }
   close(socket_fd);

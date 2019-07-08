@@ -30,16 +30,19 @@ SOURCES += \
         AppSocket.cpp \
         NetSocket.cpp \
         HTTPrequest.cpp \
-        proxy.cpp
+        proxy.cpp \
+        startport.cpp
 
 HEADERS += \
         aracnewindow.h \
         AppSocket.hpp \
         NetSocket.hpp \
-        HTTPrequest.hpp
+        HTTPrequest.hpp \
+        startport.h
 
 FORMS += \
-        aracnewindow.ui
+        aracnewindow.ui \
+        startport.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

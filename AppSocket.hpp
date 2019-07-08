@@ -28,7 +28,7 @@ private:
 public:
     AppSocket() = default;
     ~AppSocket();
-    void Start(int port);
+    int Start(int port);
     void AcceptCall();
     int ReceiveRequest(char *buffer, int max);
     void AnswerRequest(char *buffer, int size);

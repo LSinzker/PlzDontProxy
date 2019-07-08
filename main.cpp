@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[])
 {
-    uint16_t port_number = 8228;
+    /*int port_number = 8228;
 
     if (argc == 1)
       std::cout << "Using default port number, 8228." << std::endl;
@@ -13,10 +13,10 @@ int main(int argc, char *argv[])
       std::cout << "::Error::" << std::endl;
       std::cout << "Wrong number of arguments!" << std::endl;
       exit(0);
-    }
+    }*/
 
     QApplication a(argc, argv);
-    AracneWindow w(port_number);
+    AracneWindow w;
     w.show();
 
     return a.exec();
