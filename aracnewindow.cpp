@@ -15,6 +15,9 @@ AracneWindow::AracneWindow(QWidget *parent) :
     ui(new Ui::AracneWindow)
 {
     ui->setupUi(this);
+    ui->requestButton->setEnabled(false);
+    ui->replyButton->setEnabled(false);
+    ui->flushButton->setEnabled(false);
 }
 
 AracneWindow::~AracneWindow()
@@ -49,7 +52,8 @@ void AracneWindow::begin(int port) {
         QMessageBox::information(this, "Error", "Cannot bind to IP/port.");
     } else if (flag == -3) {
         QMessageBox::information(this, "Error", "Cannot listen.");
-    }
+    } else
+        QMessageBox::information(this, "Success", "Bounded to port.");
 
     listenCall();
 
@@ -57,6 +61,7 @@ void AracneWindow::begin(int port) {
 
 void AracneWindow::listenCall(){
     app.AcceptCall();
+    ui->flushButton->setEnabled(true);
     getRequest();
 }
 
@@ -66,11 +71,13 @@ void AracneWindow::getRequest() {
     ui->requestText->clear();
 
     memset(buffer, 0, BUF_SIZE);
-
-    if(app.ReceiveRequest(buffer, BUF_SIZE) < 5){
+    request_size = app.ReceiveRequest(buffer, BUF_SIZE);
+    if( request_size < 5){
         app.AcceptCall();
-        app.ReceiveRequest(buffer, BUF_SIZE);
+        request_size = app.ReceiveRequest(buffer, BUF_SIZE);
     }
+
+    buffer[request_size] = '\0';
 
     ui->requestText->setPlainText(buffer);
     ui->replyText->clear();
@@ -83,6 +90,8 @@ void AracneWindow::sendRequest(HTTPrequest request) {
     ui->replyButton->setEnabled(false);
     answer_size = net.SendRequest(request, buffer, BUF_SIZE);
 
+    buffer[answer_size] = '\0';
+
     ui->replyText->setPlainText(buffer);    // write reply on reply field
     ui->replyButton->setEnabled(true);
 }
@@ -92,7 +101,6 @@ void AracneWindow::sendReply() {
     ui->requestButton->setEnabled(false);
     app.AnswerRequest(buffer, answer_size);
 
-    //getRequest();   //keep listening
     listenCall();
 }
 
@@ -128,7 +136,14 @@ void AracneWindow::on_DumpButton_clicked()
 }
 
 
-void AracneWindow::on_pushButton_clicked()
+void AracneWindow::on_flushButton_clicked()
 {
-    ui->~AracneWindow();
+    ui->flushButton->setEnabled(false);
+    ui->replyButton->setEnabled(false);
+    ui->requestButton->setEnabled(false);
+    ui->replyText->clear();
+    ui->requestText->clear();
+    memset(buffer, 0, BUF_SIZE);
+    ui->requestText->setPlainText("Listening..");
+    listenCall();
 }

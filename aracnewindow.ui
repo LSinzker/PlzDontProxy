@@ -17,7 +17,7 @@
    <widget class="QPushButton" name="SpiderButton">
     <property name="geometry">
      <rect>
-      <x>1070</x>
+      <x>1180</x>
       <y>0</y>
       <width>105</width>
       <height>39</height>
@@ -30,7 +30,7 @@
    <widget class="QPushButton" name="DumpButton">
     <property name="geometry">
      <rect>
-      <x>1180</x>
+      <x>1290</x>
       <y>0</y>
       <width>105</width>
       <height>39</height>
@@ -86,17 +86,17 @@
      <string>Reply</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="flushButton">
     <property name="geometry">
      <rect>
-      <x>1290</x>
+      <x>120</x>
       <y>0</y>
       <width>105</width>
       <height>39</height>
      </rect>
     </property>
     <property name="text">
-     <string>Stop</string>
+     <string>Flush</string>
     </property>
    </widget>
   </widget>

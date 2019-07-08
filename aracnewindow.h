@@ -35,7 +35,7 @@ private slots:
 
     void on_setPort_triggered();
 
-    void on_pushButton_clicked();
+    void on_flushButton_clicked();
 
 private:
     Ui::AracneWindow *ui;
@@ -49,6 +49,7 @@ private:
     void sendRequest(HTTPrequest);
     void sendReply();
     int answer_size;
+    int request_size;
 
 
     StartPort* sp;
