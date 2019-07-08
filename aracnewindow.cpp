@@ -25,6 +25,8 @@ AracneWindow::~AracneWindow()
 
 void AracneWindow::on_setPort_triggered()
 {
+    memset(buffer, 0, BUF_SIZE);
+
     sp = new StartPort(this);
     connect(sp, SIGNAL(setPort(int)), this, SLOT(portSet(int)));
     sp->setModal(false);
@@ -32,11 +34,14 @@ void AracneWindow::on_setPort_triggered()
 }
 
 void AracneWindow::portSet(int port) {
-
-    ui->requestText->setPlainText("Starting.");
-
     sp->close();
 
+    begin(port);
+}
+
+void AracneWindow::begin(int port) {
+
+    ui->requestText->setPlainText("Starting.");
     int flag = app.Start(port);
     if(flag == -1){
         QMessageBox::information(this, "Error", "Could not create socket.");
@@ -46,9 +51,8 @@ void AracneWindow::portSet(int port) {
         QMessageBox::information(this, "Error", "Cannot listen.");
     }
 
-    memset(buffer, 0, BUF_SIZE);
-
     listenCall();
+
 }
 
 void AracneWindow::listenCall(){
@@ -60,6 +64,8 @@ void AracneWindow::getRequest() {
     ui->requestButton->setEnabled(false);
     ui->replyButton->setEnabled(false);
     ui->requestText->clear();
+
+    memset(buffer, 0, BUF_SIZE);
 
     if(app.ReceiveRequest(buffer, BUF_SIZE) < 5){
         app.AcceptCall();
@@ -79,7 +85,6 @@ void AracneWindow::sendRequest(HTTPrequest request) {
 
     ui->replyText->setPlainText(buffer);    // write reply on reply field
     ui->replyButton->setEnabled(true);
-    ui->requestButton->setEnabled(true);
 }
 
 void AracneWindow::sendReply() {
@@ -87,7 +92,8 @@ void AracneWindow::sendReply() {
     ui->requestButton->setEnabled(false);
     app.AnswerRequest(buffer, answer_size);
 
-    getRequest();   //keep listening
+    //getRequest();   //keep listening
+    listenCall();
 }
 
 void AracneWindow::on_requestButton_clicked()

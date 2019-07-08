@@ -43,6 +43,7 @@ private:
     NetSocket net;
     char buffer[1024*1024];
     void bindPort();
+    void begin(int);
     void listenCall();
     void getRequest();
     void sendRequest(HTTPrequest);
