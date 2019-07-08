@@ -45,6 +45,10 @@ int main(int argc, char *argv[]) {
     HTTPrequest request(buffer);
     std::cout << "Request: " << std::endl << buffer << std::endl;
 
+    if(strcmp(buffer, "POST")==0) {
+      std::cout << "Fuck POST" << std::endl;
+      continue;
+    }
     NetSocket net;
     int answer_size = net.SendRequest(request, buffer, sizeof(buffer));
 
@@ -54,10 +58,6 @@ int main(int argc, char *argv[]) {
     app.AnswerRequest(buffer, answer_size);
 
   }
-  /*QApplication a(argc, argv);
-  MainWindow w;
-  w.show();
-  return a.exec();*/
 
   std::cout << "Closing socket... ";
   app.~AppSocket();

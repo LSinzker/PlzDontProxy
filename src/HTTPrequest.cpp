@@ -2,6 +2,7 @@
 #include <cstring>
 #include <vector>
 #include <sstream>
+#include <iostream>
 
 
 HTTPrequest::HTTPrequest(char *request) {
@@ -12,6 +13,10 @@ void HTTPrequest::Parse(char *request) {
   method = strtok(request, " ");
   url = strtok(NULL, " ");
   version = strtok(NULL, "\r\n");
+
+  if (method == "CONNECT") {
+    std::cout << "Atempting to CONNECT" << std::endl;
+  }
 
   char *field_name, *field_value;
   while ((field_name = strtok(NULL, " ")) && (field_value = strtok(NULL, "\r\n"))) {

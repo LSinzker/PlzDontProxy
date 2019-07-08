@@ -21,7 +21,7 @@ private:
     char svc[NI_MAXSERV];   //buffer for service
     int clientSocket;       //socket
     int result;
-    char buffer[4096];
+    //char buffer[4096];
     int size_msg;
 
 
