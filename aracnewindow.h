@@ -7,6 +7,7 @@
 #include "NetSocket.hpp"
 #include "AppSocket.hpp"
 #include "startport.h"
+#include "spider.hpp"
 
 namespace Ui {
 class AracneWindow;
@@ -41,6 +42,7 @@ private:
     Ui::AracneWindow *ui;
     AppSocket app;
     NetSocket net;
+    Spider peter_parker;
     char buffer[1024*1024];
     void bindPort();
     void begin(int);

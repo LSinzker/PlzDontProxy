@@ -31,6 +31,7 @@ SOURCES += \
         NetSocket.cpp \
         HTTPrequest.cpp \
         proxy.cpp \
+        spider.cpp \
         startport.cpp
 
 HEADERS += \
@@ -38,6 +39,7 @@ HEADERS += \
         AppSocket.hpp \
         NetSocket.hpp \
         HTTPrequest.hpp \
+        spider.hpp \
         startport.h
 
 FORMS += \

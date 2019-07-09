@@ -8,7 +8,7 @@
 #include <iostream>
 #include <string>
 
-#define BUF_SIZE 1024*1024
+#define BUF_SIZE 65535
 
 AracneWindow::AracneWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -127,7 +127,17 @@ void AracneWindow::on_replyButton_clicked()
 
 void AracneWindow::on_SpiderButton_clicked()
 {
-    QMessageBox::information(this, "Spider", "Spider tree");
+    QString requestQStr = (ui->replyText)->toPlainText();
+    requestQStr = requestQStr.replace("\n", "\r\n");
+    requestQStr = requestQStr.replace("\r\r\n", "\r\n");
+    strcpy(buffer, requestQStr.toLocal8Bit().data());
+
+    std::vector<std::string> spider_vector = peter_parker.HypertextTree(buffer);
+    peter_parker.PrintVector(spider_vector);
+
+    for (int i=0;i<spider_vector.size(); i++) {
+      ui->requestText->setPlainText(QString::fromStdString(spider_vector.at(i)));
+    }
 }
 
 void AracneWindow::on_DumpButton_clicked()
